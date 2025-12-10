@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -7,8 +8,8 @@ datasource db {
   provider = "postgresql"
 }
 
-model Account {
-  puuid String @unique
-  gameName String
-  tagLine String
+model Message {
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
 }
