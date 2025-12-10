@@ -1,0 +1,31 @@
+# System, IDE and Tools
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build Outputs (Backend/General)
+dist/
+build/
+coverage/
+
+# Frontend (Next.js)
+.next/
+out/
+next-env.d.ts
+.vercel/
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Docker
+docker-compose.override.yml
+
+# TypeScript
+*.tsbuildinfo

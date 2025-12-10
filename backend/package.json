@@ -1,0 +1,15 @@
+{
+	"dependencies": {
+		"@prisma/adapter-pg": "^7.1.0",
+		"@prisma/client": "^7.1.0",
+		"@trpc/client": "^11.7.2",
+		"@trpc/server": "^11.7.2",
+		"dotenv": "^17.2.3",
+		"pg": "^8.16.3"
+	},
+	"devDependencies": {
+		"@types/node": "^25.0.0",
+		"@types/pg": "^8.16.0",
+		"prisma": "^7.1.0"
+	}
+}
