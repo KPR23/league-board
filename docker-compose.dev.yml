@@ -1,0 +1,45 @@
+services:
+  db:
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      target: dependencies
+    command: pnpm dev
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: development
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      target: dependencies
+    command: pnpm dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  prisma-studio:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-app}?schema=public
+    ports:
+      - "5555:5555"
+    command: sh -c "corepack enable && pnpm install && pnpx prisma studio --port 5555 --browser none"
+    networks:
+      - app_network
+    depends_on:
+      db:
+        condition: service_healthy

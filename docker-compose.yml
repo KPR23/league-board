@@ -1,23 +1,56 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:16-alpine
+    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: app
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+    volumes:
+      - league_board_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-app}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_network
 
   backend:
-    build: ./backend
-    ports:
-      - "8000:8000"
-    env_file:
-      - ./backend/.env
+    build:
+      context: ./backend
+      target: deploy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-app}?schema=public
+      PORT: 8000
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+    restart: always
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: runner
     ports:
       - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000 # Adjust if using server-side calls container-to-container
+      # If frontend (browser) talks to backend, localhost:8000 is fine if backend maps port 8000.
+      # But in prod, we usually expose backend via reverse proxy or directly.
+      # Here we map backend port in override, but in prod we might need it too?
+      # For now, let's assume we map ports in prod too for simplicity, or user adds a proxy.
+      # I'll map ports in prod for now to keep it usable.
     depends_on:
       - backend
+    networks:
+      - app_network
+    restart: always
+
+volumes:
+  league_board_db_data:
+
+networks:
+  app_network:

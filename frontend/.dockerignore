@@ -1,3 +1,16 @@
 node_modules
-.env
+.pnpm-store
 .next
+out
+build
+coverage
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+*.md
+*.log
+.DS_Store
+biome.json
+tsconfig.json
