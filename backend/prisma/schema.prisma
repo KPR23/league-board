@@ -13,3 +13,9 @@ model Message {
   text      String
   createdAt DateTime @default(now())
 }
+
+model RiotAccount {
+  puuid String @unique
+  gameName String
+  tagLine String
+}

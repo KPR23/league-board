@@ -1,3 +1,4 @@
+import "dotenv-flow/config";
 import { defineConfig, env } from "prisma/config";
 
 export default defineConfig({

@@ -37,12 +37,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000 # Adjust if using server-side calls container-to-container
-      # If frontend (browser) talks to backend, localhost:8000 is fine if backend maps port 8000.
-      # But in prod, we usually expose backend via reverse proxy or directly.
-      # Here we map backend port in override, but in prod we might need it too?
-      # For now, let's assume we map ports in prod too for simplicity, or user adds a proxy.
-      # I'll map ports in prod for now to keep it usable.
+      NEXT_PUBLIC_API_URL: http://localhost:8000
     depends_on:
       - backend
     networks:

@@ -12,14 +12,11 @@ export default function Home() {
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				<>
-					test
-					<ul>
-						{data?.map((message) => (
-							<li key={message.id}>{message.text}</li>
-						))}
-					</ul>
-				</>
+				<ul>
+					{data?.map((message) => (
+						<li key={message.id}>{message.text}</li>
+					))}
+				</ul>
 			)}
 		</div>
 	);
